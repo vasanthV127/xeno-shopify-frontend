@@ -269,11 +269,12 @@ const Customers = () => {
                         <td>
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/30 to-purple-600/30 flex items-center justify-center text-primary font-bold text-sm">
-                              {customer.name ? customer.name.charAt(0).toUpperCase() : '?'}
+                              {customer.firstName ? customer.firstName.charAt(0).toUpperCase() : 
+                               customer.lastName ? customer.lastName.charAt(0).toUpperCase() : '?'}
                             </div>
                             <div>
                               <div className="text-sm font-semibold text-gray-100 group-hover:text-primary transition-colors">
-                                {customer.name || 'Unknown'}
+                                {(customer.firstName || '') + ' ' + (customer.lastName || '') || 'Unknown'}
                               </div>
                               <div className="text-xs text-gray-500">{customer.email || 'No email'}</div>
                             </div>
