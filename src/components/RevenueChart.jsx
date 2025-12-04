@@ -57,8 +57,24 @@ const RevenueChart = ({ data }) => {
     plugins: {
       legend: {
         position: 'top',
+        labels: {
+          color: '#9ca3af',
+          font: {
+            size: 12,
+            weight: 'bold'
+          },
+          usePointStyle: true,
+          padding: 20
+        }
       },
       tooltip: {
+        backgroundColor: 'rgba(17, 17, 17, 0.95)',
+        titleColor: '#f3f4f6',
+        bodyColor: '#d1d5db',
+        borderColor: '#374151',
+        borderWidth: 1,
+        padding: 12,
+        displayColors: true,
         callbacks: {
           label: function(context) {
             let label = context.dataset.label || '';
@@ -67,7 +83,7 @@ const RevenueChart = ({ data }) => {
             }
             if (context.parsed.y !== null) {
               if (context.dataset.label === 'Revenue') {
-                label += '$' + context.parsed.y.toFixed(2);
+                label += '$' + context.parsed.y.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
               } else {
                 label += context.parsed.y;
               }
@@ -78,13 +94,43 @@ const RevenueChart = ({ data }) => {
       }
     },
     scales: {
+      x: {
+        grid: {
+          color: '#1f1f1f',
+          drawBorder: false
+        },
+        ticks: {
+          color: '#6b7280',
+          font: {
+            size: 11
+          }
+        }
+      },
       y: {
         type: 'linear',
         display: true,
         position: 'left',
         title: {
           display: true,
-          text: 'Revenue ($)'
+          text: 'Revenue ($)',
+          color: '#9ca3af',
+          font: {
+            size: 12,
+            weight: 'bold'
+          }
+        },
+        grid: {
+          color: '#1f1f1f',
+          drawBorder: false
+        },
+        ticks: {
+          color: '#6b7280',
+          font: {
+            size: 11
+          },
+          callback: function(value) {
+            return '$' + value.toLocaleString();
+          }
         }
       },
       y1: {
@@ -93,11 +139,22 @@ const RevenueChart = ({ data }) => {
         position: 'right',
         title: {
           display: true,
-          text: 'Orders'
+          text: 'Orders',
+          color: '#9ca3af',
+          font: {
+            size: 12,
+            weight: 'bold'
+          }
         },
         grid: {
           drawOnChartArea: false,
         },
+        ticks: {
+          color: '#6b7280',
+          font: {
+            size: 11
+          }
+        }
       },
     }
   };

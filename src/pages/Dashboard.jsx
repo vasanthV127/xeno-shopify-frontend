@@ -61,38 +61,42 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-dark-bg">
+        <div className="flex flex-col items-center gap-4">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-t-2 border-primary"></div>
+          <p className="text-gray-400 animate-pulse">Loading dashboard...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-dark-bg">
       {/* Header */}
-      <header className="bg-white shadow-sm">
+      <header className="glass-card border-b border-dark-border sticky top-0 z-50 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                {user?.storeName || 'Shopify Insights'}
+            <div className="animate-fade-in">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-light to-primary bg-clip-text text-transparent">
+                {user?.storeName || 'Xeno Insights'}
               </h1>
-              <p className="text-sm text-gray-600 mt-1">
+              <p className="text-sm text-gray-400 mt-1 flex items-center gap-2">
+                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                 Welcome back, {user?.email}
               </p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 animate-slide-up">
               <button
                 onClick={handleSync}
                 disabled={syncing}
-                className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition disabled:opacity-50"
+                className="btn-gradient flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <RefreshCw className={`w-4 h-4 ${syncing ? 'animate-spin' : ''}`} />
                 {syncing ? 'Syncing...' : 'Sync Data'}
               </button>
               <button
                 onClick={logout}
-                className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+                className="flex items-center gap-2 px-4 py-2.5 border border-dark-border rounded-lg hover:bg-dark-hover hover:border-gray-600 transition-all duration-200 text-gray-300"
               >
                 <LogOut className="w-4 h-4" />
                 Logout
@@ -103,9 +107,9 @@ const Dashboard = () => {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in">
           <StatsCard
             title="Total Customers"
             value={stats?.totalCustomers || 0}
@@ -126,14 +130,14 @@ const Dashboard = () => {
           />
           <StatsCard
             title="Total Revenue"
-            value={`$${(stats?.totalRevenue || 0).toFixed(2)}`}
+            value={`$${(stats?.totalRevenue || 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}
             icon={DollarSign}
             color="yellow"
           />
         </div>
 
         {/* Secondary Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-slide-up">
           <StatsCard
             title="Average Order Value"
             value={`$${(stats?.averageOrderValue || 0).toFixed(2)}`}
@@ -157,17 +161,21 @@ const Dashboard = () => {
         {/* Charts and Tables */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Revenue Chart */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <div className="mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">Revenue Overview</h2>
+          <div className="chart-container">
+            <div className="mb-6">
+              <h2 className="text-xl font-bold text-gray-100 mb-2">Revenue Overview</h2>
+              <p className="text-sm text-gray-400 mb-4">Track your revenue and order trends</p>
               <DateRangeFilter dateRange={dateRange} setDateRange={setDateRange} />
             </div>
             <RevenueChart data={orderStats} />
           </div>
 
           {/* Top Customers */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Top 5 Customers</h2>
+          <div className="chart-container">
+            <div className="mb-6">
+              <h2 className="text-xl font-bold text-gray-100 mb-2">Top 5 Customers</h2>
+              <p className="text-sm text-gray-400">Highest spending customers</p>
+            </div>
             <TopCustomersTable customers={topCustomers} />
           </div>
         </div>
