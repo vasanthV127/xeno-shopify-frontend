@@ -103,6 +103,13 @@ const Dashboard = () => {
                   <Users className="w-4 h-4" />
                   Customers
                 </button>
+                <button
+                  onClick={() => navigate('/products')}
+                  className="px-4 py-2 rounded-lg text-gray-400 hover:bg-dark-card hover:text-primary transition flex items-center gap-2"
+                >
+                  <Package className="w-4 h-4" />
+                  Products
+                </button>
               </nav>
             </div>
             <div className="flex items-center gap-3 animate-slide-up">

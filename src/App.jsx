@@ -4,6 +4,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
 import Customers from './pages/Customers'
+import Products from './pages/Products'
 import PrivateRoute from './components/PrivateRoute'
 
 function App() {
@@ -22,6 +23,11 @@ function App() {
             <Route path="/customers" element={
               <PrivateRoute>
                 <Customers />
+              </PrivateRoute>
+            } />
+            <Route path="/products" element={
+              <PrivateRoute>
+                <Products />
               </PrivateRoute>
             } />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
