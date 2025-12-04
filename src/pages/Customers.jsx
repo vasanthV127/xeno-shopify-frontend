@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Users, Search, Filter, TrendingUp, DollarSign, ShoppingBag, LayoutDashboard, LogOut, RefreshCw } from 'lucide-react';
+import { Users, Search, Filter, TrendingUp, DollarSign, ShoppingBag, LayoutDashboard, LogOut, RefreshCw, Download } from 'lucide-react';
 import api from '../services/api';
 
 const Customers = () => {
@@ -67,6 +67,43 @@ const Customers = () => {
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
     setCurrentPage(0);
+  };
+
+  const handleExportCSV = async () => {
+    try {
+      const params = {};
+      if (selectedSegment !== 'all') {
+        params.segment = selectedSegment;
+      }
+      if (searchTerm.trim()) {
+        params.search = searchTerm.trim();
+      }
+
+      const response = await api.get('/customers/export', {
+        params,
+        responseType: 'blob'
+      });
+
+      // Create download link
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      
+      // Extract filename from Content-Disposition header or use default
+      const contentDisposition = response.headers['content-disposition'];
+      const filename = contentDisposition
+        ? contentDisposition.split('filename=')[1].replace(/"/g, '')
+        : `customers_export_${new Date().toISOString().slice(0, 10)}.csv`;
+      
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error exporting CSV:', error);
+      alert('Failed to export CSV. Please try again.');
+    }
   };
 
   const getSegmentBadge = (totalSpent) => {
@@ -222,6 +259,13 @@ const Customers = () => {
                 className="input-dark w-full pl-10"
               />
             </div>
+            <button
+              onClick={handleExportCSV}
+              className="btn-primary flex items-center gap-2 whitespace-nowrap"
+            >
+              <Download className="w-4 h-4" />
+              Export CSV
+            </button>
             <div className="flex items-center gap-2 text-gray-400">
               <Filter className="w-5 h-5" />
               <span className="text-sm font-semibold">
