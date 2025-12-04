@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
+import Customers from './pages/Customers'
 import PrivateRoute from './components/PrivateRoute'
 
 function App() {
@@ -16,6 +17,11 @@ function App() {
             <Route path="/dashboard" element={
               <PrivateRoute>
                 <Dashboard />
+              </PrivateRoute>
+            } />
+            <Route path="/customers" element={
+              <PrivateRoute>
+                <Customers />
               </PrivateRoute>
             } />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />

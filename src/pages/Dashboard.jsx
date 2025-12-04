@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { dashboardService, shopifyService } from '../services/api';
 import StatsCard from '../components/StatsCard';
@@ -7,12 +8,13 @@ import TopCustomersTable from '../components/TopCustomersTable';
 import DateRangeFilter from '../components/DateRangeFilter';
 import { 
   Users, ShoppingCart, Package, DollarSign, 
-  TrendingUp, LogOut, RefreshCw 
+  TrendingUp, LogOut, RefreshCw, LayoutDashboard
 } from 'lucide-react';
 import { format, subDays } from 'date-fns';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [stats, setStats] = useState(null);
   const [topCustomers, setTopCustomers] = useState([]);
   const [orderStats, setOrderStats] = useState([]);
@@ -76,14 +78,32 @@ const Dashboard = () => {
       <header className="glass-card border-b border-dark-border sticky top-0 z-50 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
-            <div className="animate-fade-in">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-light to-primary bg-clip-text text-transparent">
-                {user?.storeName || 'Xeno Insights'}
-              </h1>
-              <p className="text-sm text-gray-400 mt-1 flex items-center gap-2">
-                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                Welcome back, {user?.email}
-              </p>
+            <div className="flex items-center gap-6 animate-fade-in">
+              <div>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-light to-primary bg-clip-text text-transparent">
+                  {user?.storeName || 'Xeno Insights'}
+                </h1>
+                <p className="text-sm text-gray-400 mt-1 flex items-center gap-2">
+                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                  Welcome back, {user?.email}
+                </p>
+              </div>
+              <nav className="hidden md:flex items-center gap-2 ml-8">
+                <button
+                  onClick={() => navigate('/dashboard')}
+                  className="px-4 py-2 rounded-lg bg-primary/20 text-primary border border-primary/30 hover:bg-primary/30 transition flex items-center gap-2"
+                >
+                  <LayoutDashboard className="w-4 h-4" />
+                  Dashboard
+                </button>
+                <button
+                  onClick={() => navigate('/customers')}
+                  className="px-4 py-2 rounded-lg text-gray-400 hover:bg-dark-card hover:text-primary transition flex items-center gap-2"
+                >
+                  <Users className="w-4 h-4" />
+                  Customers
+                </button>
+              </nav>
             </div>
             <div className="flex items-center gap-3 animate-slide-up">
               <button
