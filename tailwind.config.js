@@ -15,9 +15,9 @@ export default {
           hover: '#1a1a1a',
         },
         primary: {
-          DEFAULT: '#ffffff',
-          light: '#f3f4f6',
-          dark: '#e5e7eb',
+          DEFAULT: '#f3f4f6',
+          light: '#ffffff',
+          dark: '#d1d5db',
         },
         accent: {
           blue: '#ffffff',
