@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Users, Search, Filter, TrendingUp, DollarSign, ShoppingBag, LayoutDashboard, LogOut, RefreshCw, Download } from 'lucide-react';
+import { formatINR } from '../utils/currency';
 import api from '../services/api';
 
 const Customers = () => {
@@ -107,9 +108,9 @@ const Customers = () => {
   };
 
   const getSegmentBadge = (totalSpent) => {
-    if (totalSpent >= 5000) {
+    if (totalSpent >= 50000) {
       return <span className="px-3 py-1 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 text-yellow-400 rounded-full text-xs font-bold border border-yellow-500/30">💎 High Value</span>;
-    } else if (totalSpent >= 1000) {
+    } else if (totalSpent >= 10000) {
       return <span className="px-3 py-1 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-400 rounded-full text-xs font-bold border border-blue-500/30">⭐ Medium Value</span>;
     } else {
       return <span className="px-3 py-1 bg-gradient-to-r from-gray-500/20 to-gray-600/20 text-gray-400 rounded-full text-xs font-bold border border-gray-500/30">🌱 Growing</span>;
@@ -205,7 +206,7 @@ const Customers = () => {
               <div>
                 <p className="text-sm font-semibold text-gray-400 uppercase">High Value</p>
                 <p className="text-3xl font-bold text-yellow-400 mt-2">{segments.highValue}</p>
-                <p className="text-xs text-gray-500 mt-1">{'> $5,000'}</p>
+                <p className="text-xs text-gray-500 mt-1">{'> ₹50,000'}</p>
               </div>
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-500/20 to-orange-500/40 flex items-center justify-center backdrop-blur-sm">
                 <TrendingUp className="w-6 h-6 text-yellow-400" />
@@ -221,7 +222,7 @@ const Customers = () => {
               <div>
                 <p className="text-sm font-semibold text-gray-400 uppercase">Medium Value</p>
                 <p className="text-3xl font-bold text-blue-400 mt-2">{segments.mediumValue}</p>
-                <p className="text-xs text-gray-500 mt-1">$1,000 - $5,000</p>
+                <p className="text-xs text-gray-500 mt-1">₹10,000 - ₹50,000</p>
               </div>
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500/20 to-cyan-500/40 flex items-center justify-center backdrop-blur-sm">
                 <DollarSign className="w-6 h-6 text-blue-400" />
@@ -237,7 +238,7 @@ const Customers = () => {
               <div>
                 <p className="text-sm font-semibold text-gray-400 uppercase">Growing</p>
                 <p className="text-3xl font-bold text-gray-300 mt-2">{segments.lowValue}</p>
-                <p className="text-xs text-gray-500 mt-1">{'< $1,000'}</p>
+                <p className="text-xs text-gray-500 mt-1">{'< ₹10,000'}</p>
               </div>
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-500/20 to-gray-600/40 flex items-center justify-center backdrop-blur-sm">
                 <ShoppingBag className="w-6 h-6 text-gray-400" />
@@ -332,7 +333,7 @@ const Customers = () => {
                         </td>
                         <td>
                           <span className="text-sm font-bold text-green-400">
-                            ${customer.totalSpent.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                          {formatINR(customer.totalSpent)}
                           </span>
                         </td>
                       </tr>

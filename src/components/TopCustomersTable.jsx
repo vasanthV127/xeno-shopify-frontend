@@ -1,3 +1,5 @@
+import { formatINR } from '../utils/currency';
+
 const TopCustomersTable = ({ customers }) => {
   return (
     <div className="overflow-x-auto rounded-lg">
@@ -45,7 +47,7 @@ const TopCustomersTable = ({ customers }) => {
                 </td>
                 <td>
                   <span className="text-sm font-bold text-green-400">
-                    ${customer.totalSpent.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                    {formatINR(customer.totalSpent)}
                   </span>
                 </td>
               </tr>

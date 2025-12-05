@@ -6,6 +6,7 @@ import StatsCard from '../components/StatsCard';
 import RevenueChart from '../components/RevenueChart';
 import TopCustomersTable from '../components/TopCustomersTable';
 import DateRangeFilter from '../components/DateRangeFilter';
+import { formatINR } from '../utils/currency';
 import { 
   Users, ShoppingCart, Package, DollarSign, 
   TrendingUp, LogOut, RefreshCw, LayoutDashboard
@@ -157,7 +158,7 @@ const Dashboard = () => {
           />
           <StatsCard
             title="Total Revenue"
-            value={`$${(stats?.totalRevenue || 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}
+            value={formatINR(stats?.totalRevenue || 0)}
             icon={DollarSign}
             color="yellow"
           />
@@ -167,7 +168,7 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-slide-up">
           <StatsCard
             title="Average Order Value"
-            value={`$${(stats?.averageOrderValue || 0).toFixed(2)}`}
+            value={formatINR(stats?.averageOrderValue || 0)}
             icon={TrendingUp}
             color="indigo"
           />
@@ -179,7 +180,7 @@ const Dashboard = () => {
           />
           <StatsCard
             title="Revenue Today"
-            value={`$${(stats?.revenueToday || 0).toFixed(2)}`}
+            value={formatINR(stats?.revenueToday || 0)}
             icon={DollarSign}
             color="teal"
           />

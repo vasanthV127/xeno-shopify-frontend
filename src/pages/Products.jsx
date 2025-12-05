@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { formatINR } from '../utils/currency';
 import { 
   Package, 
   LayoutDashboard, 
@@ -315,7 +316,7 @@ const Products = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-semibold text-gray-400 uppercase">Inventory Value</p>
-                <p className="text-3xl font-bold text-primary-light mt-2">${stats.totalInventoryValue}</p>
+                <p className="text-3xl font-bold text-primary-light mt-2">{formatINR(parseFloat(stats.totalInventoryValue || 0))}</p>
               </div>
               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-light/20 to-primary/40 flex items-center justify-center">
                 <DollarSign className="w-6 h-6 text-primary-light" />
@@ -385,7 +386,7 @@ const Products = () => {
                       <td className="py-3 px-4 text-gray-300">{product.vendor || 'N/A'}</td>
                       <td className="py-3 px-4 text-gray-300">{product.productType || 'N/A'}</td>
                       <td className="py-3 px-4 text-right text-green-400 font-semibold">
-                        ${parseFloat(product.price).toFixed(2)}
+                        {formatINR(parseFloat(product.price || 0))}
                       </td>
                       <td className="py-3 px-4 text-right">
                         {product.inventoryQuantity !== null && product.inventoryQuantity !== undefined ? (
