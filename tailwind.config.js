@@ -15,16 +15,16 @@ export default {
           hover: '#1a1a1a',
         },
         primary: {
-          DEFAULT: '#6366f1',
-          light: '#818cf8',
-          dark: '#4f46e5',
+          DEFAULT: '#ffffff',
+          light: '#f3f4f6',
+          dark: '#e5e7eb',
         },
         accent: {
-          blue: '#3b82f6',
-          purple: '#8b5cf6',
+          blue: '#ffffff',
+          purple: '#ffffff',
           green: '#10b981',
           red: '#ef4444',
-          yellow: '#f59e0b',
+          yellow: '#fbbf24',
         },
         gray: {
           850: '#1a1a1a',
