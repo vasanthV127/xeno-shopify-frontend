@@ -1,8 +1,10 @@
 # 🎨 Xeno Shopify Insights - Frontend
 
-> **React + Vite + Tailwind CSS** dashboard for multi-tenant Shopify analytics
+> **React + Vite + Tailwind CSS** dashboard for multi-tenant Shopify analytics  
+> **Live Demo:** [xeno-shopify-frontend-five.vercel.app](https://xeno-shopify-frontend-five.vercel.app)  
+> **Backend API:** [xeno-shopify-backend-frzt.onrender.com](https://xeno-shopify-backend-frzt.onrender.com)
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000?style=flat&logo=vercel)](https://xeno-shopify-frontend.vercel.app)
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000?style=flat&logo=vercel)](https://xeno-shopify-frontend-five.vercel.app)
 [![React](https://img.shields.io/badge/React-18.2.0-61DAFB?style=flat&logo=react)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-5.0.8-646CFF?style=flat&logo=vite)](https://vitejs.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.3.6-06B6D4?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
@@ -13,64 +15,129 @@
 
 | Feature | Status | Implementation |
 |---------|--------|----------------|
-| Insights Dashboard | ✅ Complete | Dashboard page with KPIs + charts |
-| Customer Insights | ✅ Complete | Customer segmentation + table |
-| Product Analytics | ✅ Complete | Top products + inventory status |
-| Authentication | ✅ Complete | JWT-based login/signup |
-| Responsive Design | ✅ Complete | Mobile-first Tailwind CSS |
+| **Shopify Integration** | ✅ Complete | Real data from xenodemo1.myshopify.com via Admin API |
+| **Insights Dashboard** | ✅ Complete | Revenue metrics, charts, KPIs with real-time data |
+| **Customer Analytics** | ✅ Complete | Customer segmentation, top customers, search |
+| **Product Analytics** | ✅ Complete | Top products, inventory status, performance |
+| **Authentication** | ✅ Complete | JWT-based login/signup with secure token storage |
+| **Responsive Design** | ✅ Complete | Mobile-first Tailwind CSS with dark theme |
+| **Data Sync** | ✅ Complete | Manual sync button triggers Shopify API fetch |
+| **Deployment** | ✅ Complete | Production deployed on Vercel with environment variables |
+| **BONUS: Webhooks** | ✅ Backend Ready | Cart/checkout events captured (API endpoints available) |
 
 ---
 
 ## ✨ Key Features
 
 ### 1. **🔐 Authentication System**
-- Email-based login/signup with JWT tokens
-- Protected routes (redirects to login if not authenticated)
-- Token stored in localStorage for persistence
-- Axios interceptor auto-injects token in API requests
-- Logout clears token and redirects to login
+- **Email-based Signup/Login** with JWT tokens
+- **Protected Routes** - Automatically redirects to login if not authenticated
+- **Token Persistence** - Stored in localStorage for session continuity
+- **Axios Interceptor** - Auto-injects JWT token in all API requests
+- **Secure Logout** - Clears token and auth context, redirects to login
+- **Tenant Context** - JWT contains tenant_id for multi-tenant isolation
+- **Demo Credentials:** test@xenodemo1.com / Test@123
 
 ### 2. **📊 Dashboard Analytics**
 - **4 Key Metrics Cards:**
-  - Total Revenue (₹ in Indian format)
-  - Total Orders count
-  - Active Customers count
-  - Average Order Value (₹)
+  - **Total Revenue** - ₹8,043.50 (from real Shopify orders)
+  - **Total Orders** - 3 orders synced from xenodemo1
+  - **Active Customers** - 5 customers from Shopify
+  - **Average Order Value** - Calculated from real data
 - **Revenue Trend Line Chart** (Chart.js)
-- **Top 5 Customers Table** with email + revenue
-- **Date Range Filter** (Last 7/30/90 days, All Time)
+  - Time-series visualization of order revenue
+  - Interactive tooltips with formatted currency
+  - Gradient fill for visual appeal
+- **Top 5 Customers Table** 
+  - Name, email, total spent (₹), order count
+  - Sorted by revenue contribution
+- **Date Range Filter** 
+  - Last 7/30/90 days, All Time
+  - Dynamic data refresh on filter change
+- **Manual Sync Button**
+  - Triggers `POST /api/sync/trigger` to fetch latest Shopify data
+  - Shows loading state during sync
+  - Success/error notifications
 
 ### 3. **👥 Customer Insights**
-- **Customer Segments Doughnut Chart:**
-  - Active Customers
-  - At-Risk Customers
-  - Dormant Customers
+- **Customer Segmentation Doughnut Chart:**
+  - **Premium** - Total spent > ₹50,000
+  - **Medium** - ₹10,000 - ₹50,000
+  - **Budget** - < ₹10,000
+  - Color-coded for easy visualization
 - **Customer List Table** with:
-  - Name, Email, Location
-  - Total Spent (₹)
+  - Name, Email, Location (if available)
+  - Total Spent (₹ formatted)
+  - Orders Count
+  - Last Order Date
+- **Search Functionality** - Filter by name or email
+- **Pagination** - Navigate large customer lists
+- **Real Data:** 5 customers synced from xenodemo1.myshopify.com
   - Orders Count
 - Search and filter functionality
 
 ### 4. **📦 Product Analytics**
 - **Top 10 Products Bar Chart** (by order count)
+  - Horizontal bar chart with product names
+  - Sorted by popularity (most ordered first)
+  - Color-coded bars for visual distinction
 - **Inventory Status Doughnut Chart:**
-  - In Stock
-  - Low Stock (<10 units)
-  - Out of Stock
+  - **In Stock** - Inventory > 10 units
+  - **Low Stock** - 1-10 units (yellow warning)
+  - **Out of Stock** - 0 units (red alert)
+  - Real-time inventory from Shopify sync
 - **Product Performance Table:**
-  - Product name
-  - Vendor
-  - Price (₹)
-  - Stock quantity
-  - Order count
+  - Product name (title from Shopify)
+  - Vendor (xenodemo1)
+  - Price (₹ formatted)
+  - Stock quantity (live inventory)
+  - Order count (popularity metric)
+  - Sortable columns for analysis
+- **Real Data:** 5 products (Sneakers ₹750, T-Shirt ₹250, Jeans ₹500, Jacket ₹1000, Cap ₹150)
 
 ### 5. **🎨 Modern UI/UX**
-- Dark theme with blue accents
-- Responsive design (mobile, tablet, desktop)
-- Loading states with spinners
-- Error handling with user-friendly messages
-- Smooth transitions and hover effects
-- Icons from Lucide React
+- **Dark Theme** with blue/purple gradient accents
+- **Fully Responsive Design** 
+  - Mobile (< 640px) - Stacked layout
+  - Tablet (640px - 1024px) - 2-column grid
+  - Desktop (> 1024px) - Full grid layout
+- **Loading States** 
+  - Spinner animations during API calls
+  - Skeleton loaders for better UX
+- **Error Handling** 
+  - User-friendly error messages
+  - Automatic retry suggestions
+  - Network error detection
+- **Smooth Transitions** 
+  - Page navigation animations
+  - Hover effects on interactive elements
+  - Chart animations with easing
+- **Icons** from Lucide React (lightweight, modern)
+- **Accessibility** 
+  - ARIA labels on interactive elements
+  - Keyboard navigation support
+  - High contrast color scheme
+
+---
+
+## 🚀 Live Demo
+
+**Production URLs:**
+- **Frontend:** [https://xeno-shopify-frontend-five.vercel.app](https://xeno-shopify-frontend-five.vercel.app)
+- **Backend API:** [https://xeno-shopify-backend-frzt.onrender.com](https://xeno-shopify-backend-frzt.onrender.com)
+- **GitHub Backend:** [vasanthV127/xeno-shopify-backend](https://github.com/vasanthV127/xeno-shopify-backend)
+- **GitHub Frontend:** [vasanthV127/xeno-shopify-frontend](https://github.com/vasanthV127/xeno-shopify-frontend)
+
+**Demo Credentials:**
+- Email: `test@xenodemo1.com`
+- Password: `Test@123`
+- Shopify Store: xenodemo1.myshopify.com
+
+**Expected Data After Sync:**
+- 5 Customers
+- 5 Products  
+- 3 Orders
+- Total Revenue: ₹8,043.50
 
 ---
 
