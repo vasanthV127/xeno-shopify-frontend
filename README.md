@@ -1,446 +1,527 @@
-# Xeno Shopify Insights - Frontend
+# 🎨 Xeno Shopify Insights - Frontend
 
-Multi-tenant Shopify Data Ingestion & Insights Service - React Frontend
+> **React + Vite + Tailwind CSS** dashboard for multi-tenant Shopify analytics
 
-## 🚀 Tech Stack
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000?style=flat&logo=vercel)](https://xeno-shopify-frontend.vercel.app)
+[![React](https://img.shields.io/badge/React-18.2.0-61DAFB?style=flat&logo=react)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-5.0.8-646CFF?style=flat&logo=vite)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.3.6-06B6D4?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
 
-- **React 18.2.0**
-- **Vite 5.0.8** (Build tool)
-- **React Router DOM 6.20.0**
-- **Axios 1.6.2** (HTTP client)
-- **Chart.js 4.4.1** (Data visualization)
-- **Tailwind CSS 3.3.6** (Styling)
-- **Lucide React** (Icons)
+---
 
-## 📋 Features
+## 📋 Assignment Checklist
 
-✅ Modern, responsive UI with Tailwind CSS  
-✅ JWT-based authentication flow  
-✅ Protected routes with auth guards  
-✅ Interactive analytics dashboard  
-✅ Revenue trend charts (Chart.js)  
-✅ Top customers insights  
-✅ Date range filtering  
-✅ Real-time data synchronization  
-✅ Loading states and error handling  
+| Feature | Status | Implementation |
+|---------|--------|----------------|
+| Insights Dashboard | ✅ Complete | Dashboard page with KPIs + charts |
+| Customer Insights | ✅ Complete | Customer segmentation + table |
+| Product Analytics | ✅ Complete | Top products + inventory status |
+| Authentication | ✅ Complete | JWT-based login/signup |
+| Responsive Design | ✅ Complete | Mobile-first Tailwind CSS |
 
-## 🗂️ Project Structure
+---
+
+## ✨ Key Features
+
+### 1. **🔐 Authentication System**
+- Email-based login/signup with JWT tokens
+- Protected routes (redirects to login if not authenticated)
+- Token stored in localStorage for persistence
+- Axios interceptor auto-injects token in API requests
+- Logout clears token and redirects to login
+
+### 2. **📊 Dashboard Analytics**
+- **4 Key Metrics Cards:**
+  - Total Revenue (₹ in Indian format)
+  - Total Orders count
+  - Active Customers count
+  - Average Order Value (₹)
+- **Revenue Trend Line Chart** (Chart.js)
+- **Top 5 Customers Table** with email + revenue
+- **Date Range Filter** (Last 7/30/90 days, All Time)
+
+### 3. **👥 Customer Insights**
+- **Customer Segments Doughnut Chart:**
+  - Active Customers
+  - At-Risk Customers
+  - Dormant Customers
+- **Customer List Table** with:
+  - Name, Email, Location
+  - Total Spent (₹)
+  - Orders Count
+- Search and filter functionality
+
+### 4. **📦 Product Analytics**
+- **Top 10 Products Bar Chart** (by order count)
+- **Inventory Status Doughnut Chart:**
+  - In Stock
+  - Low Stock (<10 units)
+  - Out of Stock
+- **Product Performance Table:**
+  - Product name
+  - Vendor
+  - Price (₹)
+  - Stock quantity
+  - Order count
+
+### 5. **🎨 Modern UI/UX**
+- Dark theme with blue accents
+- Responsive design (mobile, tablet, desktop)
+- Loading states with spinners
+- Error handling with user-friendly messages
+- Smooth transitions and hover effects
+- Icons from Lucide React
+
+---
+
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                         FRONTEND                            │
+│                                                               │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    │
+│  │   Login     │    │   Signup    │    │  Dashboard  │    │
+│  │   Page      │───▶│    Page     │───▶│    Page     │    │
+│  └─────────────┘    └─────────────┘    └─────────────┘    │
+│         │                   │                   │            │
+│         └───────────────────┴───────────────────┘            │
+│                           │                                  │
+│                    ┌──────▼──────┐                          │
+│                    │ AuthContext │                          │
+│                    │  (JWT mgmt) │                          │
+│                    └──────┬──────┘                          │
+│                           │                                  │
+│                    ┌──────▼──────┐                          │
+│                    │   api.js    │                          │
+│                    │  (Axios)    │                          │
+│                    └──────┬──────┘                          │
+└───────────────────────────┼──────────────────────────────────┘
+                            │
+                            │ HTTP + JWT
+                            │
+                            ▼
+                    ┌───────────────┐
+                    │  Backend API  │
+                    │  (Render.com) │
+                    └───────────────┘
+```
+
+---
+
+## 🛠️ Tech Stack
+
+| Category | Technology | Version | Purpose |
+|----------|-----------|---------|---------|
+| **Framework** | React | 18.2.0 | UI library |
+| **Build Tool** | Vite | 5.0.8 | Fast dev server + bundler |
+| **Routing** | React Router DOM | 6.21.1 | SPA navigation |
+| **HTTP Client** | Axios | 1.6.5 | API requests |
+| **Charts** | Chart.js | 4.4.1 | Data visualization |
+| | react-chartjs-2 | 5.2.0 | React wrapper for Chart.js |
+| **CSS Framework** | Tailwind CSS | 3.3.6 | Utility-first styling |
+| **Icons** | Lucide React | 0.307.0 | Modern icon library |
+| **Deployment** | Vercel | - | Static hosting + CDN |
+
+---
+
+## 📂 Project Structure
 
 ```
 frontend/
 ├── src/
-│   ├── components/
-│   │   ├── DateRangeFilter.jsx           # Date range selector
-│   │   ├── PrivateRoute.jsx              # Auth guard for routes
-│   │   ├── RevenueChart.jsx              # Chart.js line chart
-│   │   ├── StatsCard.jsx                 # Metric display card
-│   │   └── TopCustomersTable.jsx         # Top customers table
-│   ├── context/
-│   │   └── AuthContext.jsx               # Global auth state
+│   ├── main.jsx                 # App entry point
+│   ├── App.jsx                  # Root component with routes
+│   ├── index.css                # Tailwind imports + global styles
+│   │
 │   ├── pages/
-│   │   ├── Dashboard.jsx                 # Main dashboard page
-│   │   ├── Login.jsx                     # Login page
-│   │   └── Signup.jsx                    # Registration page
+│   │   ├── Login.jsx            # Login page
+│   │   ├── Signup.jsx           # Signup page
+│   │   ├── Dashboard.jsx        # Main dashboard
+│   │   ├── Customers.jsx        # Customer insights page
+│   │   └── Products.jsx         # Product analytics page
+│   │
+│   ├── components/
+│   │   ├── PrivateRoute.jsx     # Protected route wrapper
+│   │   ├── StatsCard.jsx        # KPI metric card
+│   │   ├── RevenueChart.jsx     # Line chart component
+│   │   ├── TopCustomersTable.jsx # Top 5 customers table
+│   │   └── DateRangeFilter.jsx  # Date filter component
+│   │
+│   ├── context/
+│   │   └── AuthContext.jsx      # Global auth state
+│   │
 │   ├── services/
-│   │   └── api.js                        # Axios config + API methods
-│   ├── App.jsx                           # Root component with routes
-│   ├── index.css                         # Global styles + Tailwind
-│   └── main.jsx                          # React entry point
-├── index.html                            # HTML template
-├── package.json                          # Dependencies
-├── tailwind.config.js                    # Tailwind configuration
-├── vite.config.js                        # Vite build config
-├── Dockerfile                            # Docker build
-├── nginx.conf                            # Nginx config for production
-└── README.md                             # This file
+│   │   └── api.js               # Axios instance + interceptors
+│   │
+│   └── utils/
+│       └── currency.js          # ₹ formatting helpers
+│
+├── public/                      # Static assets
+├── index.html                   # HTML template
+├── vite.config.js               # Vite configuration
+├── tailwind.config.js           # Tailwind customization
+├── postcss.config.js            # PostCSS plugins
+├── package.json                 # Dependencies
+└── README.md                    # This file
 ```
 
-## 🛠️ Local Development Setup
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+
-- npm or yarn
+- Node.js 18+ and npm 9+
+- Backend API running (see backend README)
 
-### Steps
-
-1. **Clone the repository:**
+### 1. Clone Repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/xeno-shopify-frontend.git
+git clone https://github.com/yourusername/xeno-shopify-frontend.git
 cd xeno-shopify-frontend
 ```
 
-2. **Install dependencies:**
+### 2. Install Dependencies
 ```bash
 npm install
 ```
 
-3. **Create `.env` file:**
+### 3. Configure Environment
+Create `.env` file in root:
 ```bash
-echo "VITE_API_URL=http://localhost:8080/api" > .env
+# Backend API URL (local development)
+VITE_API_URL=http://localhost:8080
+
+# Or production backend
+VITE_API_URL=https://xeno-shopify-backend-frzt.onrender.com
 ```
 
-4. **Start development server:**
+### 4. Run Development Server
 ```bash
 npm run dev
 ```
+Opens at `http://localhost:5173`
 
-5. **Open browser:**
-```
-http://localhost:3000
-```
-
-## 🐳 Docker Setup
-
-### Build and Run
-```bash
-# Build image
-docker build -t xeno-frontend .
-
-# Run container
-docker run -p 3000:80 xeno-frontend
-```
-
-### Production Build
+### 5. Build for Production
 ```bash
 npm run build
-# Output: dist/ folder ready for deployment
 ```
+Outputs to `dist/` folder.
 
-## 📦 Available Scripts
-
+### 6. Preview Production Build
 ```bash
-npm run dev          # Start development server (port 3000)
-npm run build        # Build for production
-npm run preview      # Preview production build
-npm run lint         # Run ESLint
+npm run preview
 ```
 
-## 🎨 Component Overview
+---
 
-### Pages
+## 🌐 Deployment (Vercel)
 
-**Login.jsx**
-- Email/password authentication
+### Automatic Deployment
+1. Push code to GitHub
+2. Import repository in Vercel dashboard
+3. Set environment variable:
+   ```
+   VITE_API_URL=https://xeno-shopify-backend-frzt.onrender.com
+   ```
+4. Deploy! 🚀
+
+### Manual Deployment
+```bash
+# Install Vercel CLI
+npm install -g vercel
+
+# Deploy
+vercel --prod
+```
+
+**Live URL:** https://xeno-shopify-frontend.vercel.app
+
+---
+
+## 🔑 Demo Credentials
+
+Test the application with these 5 demo tenants:
+
+| Store Name | Email | Password | Industry |
+|------------|-------|----------|----------|
+| Fashion Bazaar | owner@fashionbazaar.in | Demo@123 | Fashion |
+| Spice Garden | admin@spicegarden.in | Demo@123 | Food |
+| TechHub Electronics | contact@techhub.in | Demo@123 | Electronics |
+| Home Essentials | info@homeessentials.in | Demo@123 | Home Decor |
+| Ayurveda Wellness | support@ayurvedawellness.in | Demo@123 | Wellness |
+
+Each tenant has:
+- 10 unique products
+- 6+ customers with orders
+- Revenue ranging from ₹50K to ₹1.25L
+- Realistic transaction history
+
+---
+
+## 📊 Pages & Components
+
+### 1. **Login Page** (`pages/Login.jsx`)
+- Email + password form
+- "Remember me" checkbox
+- "Don't have an account?" link to signup
+- API call to `/api/auth/login`
+- Stores JWT token in localStorage
+- Redirects to Dashboard on success
+
+### 2. **Signup Page** (`pages/Signup.jsx`)
+- Store name, email, password, Shopify domain/token
 - Form validation
-- Error handling
-- Redirect to dashboard on success
+- API call to `/api/auth/signup`
+- Auto-login after signup
+- Redirects to Dashboard
 
-**Signup.jsx**
-- New tenant registration
-- Shopify credentials input
-- Email validation
-- Password strength requirements
+### 3. **Dashboard Page** (`pages/Dashboard.jsx`)
+- **Components:**
+  - `<StatsCard />` × 4 (Revenue, Orders, Customers, AOV)
+  - `<RevenueChart />` (Line chart)
+  - `<TopCustomersTable />` (Top 5 list)
+  - `<DateRangeFilter />` (7/30/90 days, All Time)
+- **Data Sources:**
+  - `/api/dashboard/stats` (KPIs)
+  - `/api/dashboard/revenue-trend` (chart data)
+  - `/api/dashboard/top-customers` (table data)
 
-**Dashboard.jsx**
-- Stats cards grid (customers, orders, products, revenue)
-- Revenue trend chart (last 30 days)
-- Top 5 customers table
-- Manual sync button
-- Date range filter
-- Logout functionality
+### 4. **Customers Page** (`pages/Customers.jsx`)
+- **Customer Segments Chart:**
+  - Active: Ordered in last 30 days
+  - At-Risk: Ordered 30-90 days ago
+  - Dormant: No order in 90+ days
+- **Customer List Table:**
+  - Name, Email, Location
+  - Total Spent, Orders Count
+  - Search bar filter
+- **Data Source:** `/api/customers/list`
 
-### Components
+### 5. **Products Page** (`pages/Products.jsx`)
+- **Top 10 Products Bar Chart:**
+  - Sorted by order count (most popular)
+  - X-axis: Product names
+  - Y-axis: Order count
+- **Inventory Status Doughnut:**
+  - In Stock: 10+ units
+  - Low Stock: 1-9 units
+  - Out of Stock: 0 units
+- **Product Performance Table:**
+  - Product name, Vendor, Price (₹), Stock, Orders
+  - Sortable columns
+- **Data Source:** `/api/products/stats`, `/api/products/top`
 
-**StatsCard.jsx**
-- Reusable metric display
-- Props: `title`, `value`, `icon`, `color`
-- Color variants: blue, green, purple, yellow, indigo, pink, teal
+### 6. **Private Route** (`components/PrivateRoute.jsx`)
+- HOC wrapper for protected pages
+- Checks if JWT token exists in localStorage
+- If not authenticated → redirects to `/login`
+- If authenticated → renders child component
 
-**RevenueChart.jsx**
-- Chart.js line chart
-- Dual Y-axis (revenue + order count)
-- Filled area under line
-- Responsive design
-- Date formatting (MMM dd)
+### 7. **Auth Context** (`context/AuthContext.jsx`)
+- Global state for:
+  - `user` (email, tenant info)
+  - `token` (JWT)
+  - `isAuthenticated` (boolean)
+- Functions:
+  - `login(email, token)` - Store token, set user
+  - `logout()` - Clear token, redirect to login
+  - `signup()` - Same as login after signup
+- Used by all pages via `useAuth()` hook
 
-**TopCustomersTable.jsx**
-- Displays top 5 customers by spend
-- Columns: Name, Email, Orders, Total Spent
-- Empty state message
-- Currency formatting
+### 8. **API Service** (`services/api.js`)
+- Axios instance with base URL from env
+- **Request Interceptor:**
+  - Auto-injects `Authorization: Bearer <token>` header
+  - Reads token from localStorage
+- **Response Interceptor:**
+  - Handles 401 errors (token expired)
+  - Auto-redirects to login
+  - Shows error toasts
 
-**DateRangeFilter.jsx**
-- Start and end date inputs
-- Updates parent state on change
-- Default: Last 30 days
+---
 
-**PrivateRoute.jsx**
-- Auth guard for protected routes
-- Redirects to login if not authenticated
-- Shows loading spinner during auth check
+## 💰 Currency Formatting (`utils/currency.js`)
 
-### Context
+All monetary values displayed in Indian Rupee format:
 
-**AuthContext.jsx**
-- Global authentication state
-- Methods: `login`, `signup`, `logout`
-- Persists JWT to localStorage
-- Provides user data to all components
-
-### Services
-
-**api.js**
-- Axios instance with base URL
-- Request interceptor adds JWT Bearer token
-- Response interceptor handles 401 errors
-- API methods:
-  - `authService.signup(data)`
-  - `authService.login(credentials)`
-  - `dashboardService.getStats()`
-  - `dashboardService.getTopCustomers(limit)`
-  - `dashboardService.getOrdersByDate(startDate, endDate)`
-  - `shopifyService.syncData()`
-
-## 🔐 Environment Variables
-
-**Development (.env):**
-```env
-VITE_API_URL=http://localhost:8080/api
-```
-
-**Production (.env.production):**
-```env
-VITE_API_URL=https://your-backend.onrender.com/api
-```
-
-**Important:** Environment variables must be prefixed with `VITE_` to be accessible in Vite.
-
-## 🎨 Styling
-
-### Tailwind CSS Configuration
-
-Custom theme in `tailwind.config.js`:
 ```javascript
-theme: {
-  extend: {
-    colors: {
-      primary: {
-        50: '#eff6ff',
-        500: '#3b82f6',
-        600: '#2563eb',
-        // ... full spectrum
+// Full format: ₹1,25,000.00
+export const formatINR = (amount) => {
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR'
+  }).format(amount);
+};
+
+// Compact format: ₹1.25L, ₹2.5Cr
+export const formatINRCompact = (amount) => {
+  if (amount >= 10000000) { // 1 Crore
+    return `₹${(amount / 10000000).toFixed(2)}Cr`;
+  } else if (amount >= 100000) { // 1 Lakh
+    return `₹${(amount / 100000).toFixed(2)}L`;
+  } else {
+    return formatINR(amount);
+  }
+};
+```
+
+---
+
+## 🎨 Tailwind Configuration (`tailwind.config.js`)
+
+Custom theme with dark background + blue accents:
+
+```javascript
+module.exports = {
+  content: ['./index.html', './src/**/*.{js,jsx}'],
+  theme: {
+    extend: {
+      colors: {
+        primary: '#3B82F6',   // Blue-500
+        secondary: '#1E293B', // Slate-800
+        dark: '#0F172A',      // Slate-900
       }
     }
   }
 }
 ```
 
-### Global Styles
+---
 
-`index.css` includes:
-- Tailwind directives
-- Custom scrollbar styles
-- Button hover effects
-- Responsive breakpoints
+## 🔍 Known Limitations
 
-## 📊 Dashboard Features
+1. **No Real-time Updates**
+   - Dashboard data refreshes only on page load or manual refresh
+   - Consider WebSockets for live updates in production
 
-### Metrics Displayed
-1. **Total Customers** - Count of unique customers
-2. **Total Orders** - All orders placed
-3. **Total Products** - Product catalog size
-4. **Total Revenue** - Cumulative sales in dollars
-5. **Average Order Value (AOV)** - Revenue ÷ Orders
-6. **Orders Today** - Orders placed today
-7. **Revenue Today** - Today's sales
+2. **Basic Error Handling**
+   - Some error messages could be more user-friendly
+   - No retry mechanism for failed API calls
 
-### Chart Visualization
-- **Type:** Line chart with filled area
-- **Data:** Daily revenue and order count
-- **Time Range:** Last 30 days (default)
-- **Interactivity:** Hover tooltips with formatted values
-- **Axes:** Currency ($) on left, count on right
+3. **Limited Date Filters**
+   - Only predefined ranges (7/30/90 days, All Time)
+   - No custom date range picker
 
-### Top Customers Table
-- **Sorting:** By lifetime spend (descending)
-- **Limit:** Top 5 customers
-- **Data:** Name, Email, Order count, Total spent
-- **Formatting:** Currency with 2 decimal places
+4. **No Pagination**
+   - Customer and Product tables load all records
+   - May slow down with 1000+ records
 
-## 🧪 Testing
+5. **No Export Functionality**
+   - Cannot export data to CSV/Excel
+   - Users may want to download reports
 
-### Manual Testing Checklist
+6. **Basic Search**
+   - Only client-side search in Customer page
+   - No advanced filters (by location, revenue range, etc.)
 
-**Authentication:**
-- [ ] Signup with valid credentials
-- [ ] Login with registered user
-- [ ] Logout clears session
-- [ ] Protected routes redirect to login
-- [ ] Invalid credentials show error
+7. **No Dark/Light Mode Toggle**
+   - Fixed dark theme
+   - Some users may prefer light mode
 
-**Dashboard:**
-- [ ] Stats cards display correct data
-- [ ] Chart renders without errors
-- [ ] Top customers table shows data
-- [ ] Sync button triggers API call
-- [ ] Date filter updates chart
-- [ ] Loading states appear during API calls
-- [ ] Error messages display on API failure
+8. **Mobile Charts**
+   - Charts may be hard to read on small screens
+   - Consider hiding or simplifying on mobile
 
-**Responsive Design:**
-- [ ] Desktop (1920px+)
-- [ ] Laptop (1366px)
-- [ ] Tablet (768px)
-- [ ] Mobile (375px)
+9. **No Offline Support**
+   - Requires internet connection
+   - Service Worker could cache data
 
-### Browser Compatibility
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
-
-## 🚢 Deployment
-
-### Deploy to Vercel (Recommended)
-
-1. **Install Vercel CLI:**
-```bash
-npm i -g vercel
-```
-
-2. **Deploy:**
-```bash
-vercel
-```
-
-3. **Set Environment Variables:**
-```bash
-vercel env add VITE_API_URL
-# Enter: https://your-backend.com/api
-```
-
-4. **Production Deploy:**
-```bash
-vercel --prod
-```
-
-**Or use Vercel Dashboard:**
-- Connect GitHub repository
-- Framework: Vite
-- Build Command: `npm run build`
-- Output Directory: `dist`
-- Add environment variable: `VITE_API_URL`
-
-### Deploy to Netlify
-
-1. **Install Netlify CLI:**
-```bash
-npm i -g netlify-cli
-```
-
-2. **Deploy:**
-```bash
-netlify deploy --prod
-```
-
-3. **Configure:**
-- Build command: `npm run build`
-- Publish directory: `dist`
-- Environment variables: Add `VITE_API_URL` in Netlify dashboard
-
-### Deploy to Render (Static Site)
-
-1. **Connect repository in Render dashboard**
-2. **Build Command:** `npm install && npm run build`
-3. **Publish Directory:** `dist`
-4. **Environment Variables:** Add `VITE_API_URL`
-
-## 🐛 Troubleshooting
-
-**Issue:** "API request failed"
-```bash
-# Check VITE_API_URL in .env
-# Verify backend is running: curl http://localhost:8080/api/health
-# Check browser console for CORS errors
-```
-
-**Issue:** "Token expired"
-```bash
-# JWT tokens expire after 24 hours
-# Log out and log back in to get new token
-```
-
-**Issue:** Charts not rendering
-```bash
-# Verify Chart.js is installed: npm list chart.js
-# Check browser console for errors
-# Ensure data format matches expected structure
-```
-
-**Issue:** Tailwind styles not applied
-```bash
-# Verify tailwind.config.js exists
-# Check index.css has @tailwind directives
-# Clear cache: rm -rf node_modules/.vite
-```
-
-## 📦 Key Dependencies
-
-```json
-{
-  "react": "^18.2.0",
-  "react-dom": "^18.2.0",
-  "react-router-dom": "^6.20.0",
-  "axios": "^1.6.2",
-  "chart.js": "^4.4.1",
-  "react-chartjs-2": "^5.2.0",
-  "lucide-react": "^0.294.0",
-  "date-fns": "^2.30.0"
-}
-```
-
-## 🔄 API Integration
-
-All API calls go through `src/services/api.js`:
-
-```javascript
-// Example: Get dashboard stats
-const stats = await dashboardService.getStats();
-// Returns: { totalCustomers, totalOrders, totalRevenue, ... }
-
-// Example: Sync Shopify data
-await shopifyService.syncData();
-// Triggers backend sync and returns success message
-```
-
-JWT token is automatically added to all requests via Axios interceptor.
-
-## 🎯 User Flow
-
-1. **First Visit** → Redirected to `/login`
-2. **New User** → Click "Sign Up" → Enter Shopify credentials → Auto-login → Dashboard
-3. **Returning User** → Login → Dashboard
-4. **Dashboard** → View metrics → Click "Sync" → Data updates → Explore charts/tables
-5. **Logout** → Clears session → Redirected to login
-
-## 📝 Code Style
-
-**React Best Practices:**
-- Functional components with hooks
-- Context API for global state
-- Custom hooks for reusable logic
-- PropTypes for type checking (optional)
-- Descriptive component names
-
-**File Naming:**
-- PascalCase for components: `Dashboard.jsx`
-- camelCase for utilities: `api.js`
-- kebab-case for CSS: `index.css`
-
-## 📄 License
-
-Created for Xeno FDE Internship Assignment - December 2025
-
-## 👥 Author
-
-Vasanth Kumar  
-VIT-AP University
-
-## 🔗 Related Repositories
-
-- **Backend:** [xeno-shopify-backend](https://github.com/YOUR_USERNAME/xeno-shopify-backend)
-- **Full Documentation:** See main project README for complete architecture and setup
+10. **No Internationalization**
+    - Only English language
+    - Currency hardcoded to ₹ (INR)
 
 ---
 
-**Built with ⚛️ using React + Vite**
+## 🤔 Assumptions
+
+### Technical Assumptions
+1. **Browser Compatibility:** Modern browsers (Chrome 90+, Firefox 88+, Safari 14+)
+2. **Screen Resolution:** Optimized for 1920×1080 desktop, 375×667 mobile
+3. **JavaScript Enabled:** App requires JS to run (no SSR)
+4. **LocalStorage Available:** Needed for token persistence
+5. **CORS Configured:** Backend allows `https://xeno-shopify-frontend.vercel.app`
+
+### Business Assumptions
+1. **Indian Market Focus:** All currency in ₹ (INR)
+2. **Small-Medium Stores:** 10-50 products, 50-500 customers
+3. **Single User per Tenant:** No multi-user access control
+4. **Read-Only Dashboard:** No data editing (view-only analytics)
+5. **Manual Data Sync:** Users trigger sync from backend (not visible in frontend)
+
+### Data Assumptions
+1. **Valid Shopify Data:** Backend provides clean, validated data
+2. **No Missing Fields:** All required fields (name, email, price) present
+3. **Positive Numbers:** Revenue, prices, stock always ≥ 0
+4. **UTC Timezone:** All dates in UTC (no timezone conversion)
+5. **English Product Names:** No RTL languages or special characters
+
+---
+
+## 🔜 Next Steps (Productionization)
+
+### High Priority
+- [ ] Add pagination to Customer and Product tables
+- [ ] Implement custom date range picker
+- [ ] Add CSV/Excel export functionality
+- [ ] Improve mobile responsiveness for charts
+- [ ] Add loading skeletons instead of spinners
+
+### Medium Priority
+- [ ] Implement dark/light mode toggle
+- [ ] Add advanced search filters (location, revenue range)
+- [ ] Show real-time sync status from backend
+- [ ] Add user profile page (change password, logout all devices)
+- [ ] Implement "Remember me" functionality properly
+
+### Low Priority
+- [ ] Add internationalization (multi-language support)
+- [ ] Implement Service Worker for offline support
+- [ ] Add animated page transitions
+- [ ] Create onboarding tutorial for first-time users
+- [ ] Add accessibility features (ARIA labels, keyboard navigation)
+
+### Performance Optimizations
+- [ ] Lazy load pages (React.lazy + Suspense)
+- [ ] Optimize Chart.js (reduce redraws)
+- [ ] Implement virtual scrolling for long tables
+- [ ] Add HTTP caching headers
+- [ ] Compress images and assets
+
+---
+
+## 🐛 Troubleshooting
+
+### Issue: "Network Error" when logging in
+**Solution:** Check if backend is running and `VITE_API_URL` is correct in `.env`
+
+### Issue: Charts not rendering
+**Solution:** Ensure Chart.js is installed: `npm install chart.js react-chartjs-2`
+
+### Issue: Tailwind styles not applying
+**Solution:** Run `npm run dev` again to rebuild CSS
+
+### Issue: Token expired error
+**Solution:** JWT expires after 24 hours. Log in again to get a new token.
+
+### Issue: CORS error in console
+**Solution:** Backend must allow your frontend domain in CORS configuration
+
+---
+
+## 📞 Support
+
+- **Assignment Submission:** December 6, 2025 (TODAY!)
+- **Demo Video:** Max 7 minutes (see `DEMO_VIDEO_SCRIPT_7MIN.md`)
+- **Documentation:** See `backend/README.md` for API docs
+- **Deployment:** Frontend (Vercel) + Backend (Render)
+
+---
+
+## 📄 License
+
+This is a project for **Xeno FDE Internship 2025** assignment.  
+All rights reserved.
+
+---
+
+**Built with ❤️ using React, Vite, and Tailwind CSS**
